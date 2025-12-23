@@ -1,0 +1,241 @@
+<div class="planner-container">
+  <div class="planner-header">
+    <h1 class="planner-title">Planner for Today</h1>
+    <div class="date-navigation">
+      <button class="date-nav-btn" (click)="previousDay()" title="Previous day">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <input 
+        type="text" 
+        class="current-date" 
+        placeholder="Select date"
+        bsDatepicker
+        [(bsValue)]="bsValue"
+        [bsConfig]="bsConfig"
+        (bsValueChange)="onDateChange($event)"
+        [value]="getFormattedDate()"
+        readonly
+      />
+      <button class="date-nav-btn" (click)="nextDay()" title="Next day">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="planner-content">
+    <!-- Allocated Tasks -->
+    <div class="task-section">
+      <div class="section-header">
+        <div class="section-icon" style="background: #e0e7ff;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M3 4H17M3 10H17M3 16H17" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="section-info">
+          <h2 class="section-title">Allocated Tasks</h2>
+          <p class="section-subtitle">Available task</p>
+        </div>
+        <div class="section-hours">
+          <div class="hours-value">{{ getAllocatedHours() }}</div>
+          <div class="hours-label">Total Hours</div>
+        </div>
+      </div>
+      <div *ngIf="loadingAllocated" class="flex justify-center items-center py-6">
+        <div class="loader-container">
+          <div class="loader"></div> 
+        </div>
+      </div>
+      <div class="task-groups">
+        <div class="task-group" *ngFor="let group of allocatedTasks">
+          <div class="group-header" (click)="toggleGroup('allocated', group.name)">
+            <span class="project-indicator"></span>
+            <span class="group-name">{{ group.name }}</span>
+            <span class="task-count">{{ group.taskCount }}</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="expand-icon"
+              [class.expanded]="group.expanded">
+              <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="task-list" *ngIf="group.expanded">
+            <div class="task-item" *ngFor="let task of group.tasks" draggable="true"
+              (dragstart)="onDragStart($event, task)" (dragend)="onDragEnd($event)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="drag-handle">
+                <circle cx="6" cy="4" r="1" fill="#94a3b8" />
+                <circle cx="10" cy="4" r="1" fill="#94a3b8" />
+                <circle cx="6" cy="8" r="1" fill="#94a3b8" />
+                <circle cx="10" cy="8" r="1" fill="#94a3b8" />
+                <circle cx="6" cy="12" r="1" fill="#94a3b8" />
+                <circle cx="10" cy="12" r="1" fill="#94a3b8" />
+              </svg>
+              <span class="task-name">{{ task.name }}</span>
+              <div class="task-meta">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2" />
+                  <path d="M7 4V7L9.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+                <span class="task-hours">{{ task.hours }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Planned Tasks -->
+    <div class="task-section">
+      <div class="section-header">
+        <div class="section-icon" style="background: #d1fae5;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7.5" stroke="#10b981" stroke-width="1.5" />
+            <path d="M10 6V10L13 13" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="section-info">
+          <h2 class="section-title">Planned Tasks</h2>
+          <p class="section-subtitle">Your focused work plan</p>
+        </div>
+        <div class="section-hours">
+          <div class="hours-value">{{ getPlannedHours() }}</div>
+          <div class="hours-label">Total Hours</div>
+        </div>
+      </div>
+
+      <div class="planned-tasks" (dragover)="onDragOver($event)" (drop)="onDrop($event)"
+        [class.drag-over]="isDraggingOver">
+        <div class="planned-task" *ngFor="let group of plannedTasks">
+          <div class="planned-task-header">
+            <span class="project-indicator" [style.background]="group.projectColor"></span>
+            <span class="planned-task-name">{{ group.project }}</span>
+            <span class="task-count">{{ group.tasks.length }} task{{ group.tasks.length !== 1 ? 's' : '' }}</span>
+            <span class="planned-hours">{{ calculateGroupHours(group.tasks) }}</span>
+          </div>
+          <div class="planned-task-item" *ngFor="let task of group.tasks">
+            <span class="task-name">{{ task.name }}</span>
+            <button class="remove-btn" (click)="removeFromPlanned(task.id)" title="Remove task">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" />
+              </svg>
+            </button>
+            <span class="task-hours" *ngIf="editingTaskId !== task.id" (click)="startEditingHours(task.id, task.hours)"
+              title="Click to edit hours">
+              {{ task.hours }}
+            </span>
+            <div class="hours-edit" *ngIf="editingTaskId === task.id">
+              <input type="number" class="hours-input" [(ngModel)]="editingHours"
+                (keydown)="handleKeyPress($event, task.id)" (blur)="saveHours(task.id)" min="1" max="24" autofocus />
+              <span class="hours-suffix">hrs</span>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="plannedTasks.length === 0">
+          <p>Drag tasks here to plan your day</p>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <!-- Actual Tasks -->
+  <!-- Actual Tasks Section - Replace the existing Actual Tasks section in your HTML -->
+<div class="task-section">
+  <div class="section-header">
+    <div class="section-icon" style="background: #d1fae5;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="7.5" stroke="#0bb980" stroke-width="1.5" />
+        <path d="M6 10L9 13L14 7" stroke="#0bb980" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </div>
+    <div class="section-info">
+      <h2 class="section-title">Actual Tasks</h2>
+      <p class="section-subtitle">Successfully finished</p>
+    </div>
+    <div class="section-hours">
+      <div class="hours-value">{{ getActualHours() }}</div>
+      <div class="hours-label">Total Hours</div>
+    </div>
+  </div>
+  
+  <div *ngIf="loadingActual" class="flex justify-center items-center py-6">
+    <div class="loader-container">
+      <div class="loader"></div> 
+    </div>
+  </div>
+  
+  <div *ngIf="actualTasks.length > 0; else emptyActual">
+    <div class="task-group" *ngFor="let group of actualTasks">
+      <div class="group-header">
+        <span class="project-indicator"></span>
+        <span class="group-name">{{ group.name }}</span>
+        <span class="task-count">{{ group.taskCount }}</span>
+      </div>
+      <div class="task-list">
+        <div class="task-item" *ngFor="let task of group.tasks">
+          <!-- Colored indicator based on comparison with planned tasks -->
+          <span class="project-indicator" [style.background]="task.projectColor"></span>
+          <span class="task-name">{{ task.name }}</span>
+          <span class="task-hours">{{ task.hours }}</span>
+        </div>
+      </div>
+    </div>
+      <!-- Legend for color coding -->
+  <div class="color-legend" style="margin-top: 16px; padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 12px;">
+    <div style="font-weight: 600; margin-bottom: 8px; color: #475569;">Task Status Legend:</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></span>
+        <span style="color: #64748b;">Hours Match Planned</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></span>
+        <span style="color: #64748b;">Exceeded Planned</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></span>
+        <span style="color: #64748b;">Under Planned</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #3b82f6;"></span>
+        <span style="color: #64748b;">Not Planned</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <ng-template #emptyActual>
+    <div class="empty-state">
+      <p>No completed tasks</p>
+
+      
+    </div>
+  </ng-template>
+  
+
+</div>
+  </div>
+</div>
+
+<!-- Confirmation Modal Template -->
+<ng-template #confirmModal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ modalTitle }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancelModal()"></button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{ modalMessage }}</p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancelModal()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onConfirmModal()">Confirm</button>
+  </div>
+</ng-template>

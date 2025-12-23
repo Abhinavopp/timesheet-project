@@ -1,0 +1,142 @@
+<div class="timesheet-container">
+  <div class="timesheet-header">
+    <div class="week-controls w-100">
+      <h2 class="me-auto">Task Schedule</h2>
+      <button class="week-btn" 
+      [class.active]="isCurrentWeek()"
+      (click)="goToThisWeek()">This week</button>
+      <button class="nav-btn" (click)="previousWeek()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="week-range">{{ weekRange }}</span>
+
+      <button class="nav-btn" (click)="nextWeek()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- <div class="header-actions">
+      <button class="submit-btn">Submit for approval</button>
+      <button class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+      <button class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 6H16M4 10H16M4 14H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div> -->
+  </div>
+
+  <div class="timesheet-content">
+    <div class="timesheet-grid">
+      <div class="grid-header">
+        <div class="header-cell project-column">Projects / Tasks</div>
+        <div class="header-cell day-column" 
+             *ngFor="let day of weekDays" 
+             [class.today]="day.isToday"
+             [class.future-date]="day.isFutureDate">
+          <div class="day-name">{{ day.dayName }}</div>
+          <div class="day-date">{{ day.month }} {{ day.dateNum }}</div>
+        </div>
+        <div class="header-cell total-column">Week total</div>
+      </div>
+
+      <div class="grid-body">
+        <div class="project-section" *ngFor="let project of projects">
+          <div class="project-header" 
+               *ngIf="tasksByProject.has(project.id)"
+               (click)="toggleProject(project.id)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" 
+                 class="collapse-icon"
+                 [class.collapsed]="isProjectCollapsed(project.id)">
+              <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="project-name">{{ project.name }}</span>
+            <span class="task-count">{{ tasksByProject.get(project.id)?.length || 0 }} tasks</span>
+          </div>
+
+          <div class="task-row" 
+               *ngFor="let task of tasksByProject.get(project.id)"
+               [class.hidden]="isProjectCollapsed(project.id)">
+            <div class="task-cell">
+              <div class="task-name">{{ task.title }}</div>
+              <div class="task-estimated">Estimated: {{ task.allocated_hours || 7 }}h</div>
+            </div>
+
+            <div class="time-cell" 
+                 *ngFor="let day of weekDays" 
+                 (click)="startEditing(task.id, day.date)"
+                 [class.disabled]="day.isFutureDate"
+                 [attr.title]="day.isFutureDate ? 'Cannot enter time for future dates' : ''">
+              <div class="time-display" *ngIf="!isEditing(task.id, day.date)">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" 
+                     class="clock-icon" 
+                     *ngIf="!getDisplayTime(task.id, day.date) && !day.isFutureDate">
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M8 4V8L10.5 10.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                <span class="add-time-text" *ngIf="!getDisplayTime(task.id, day.date) && !day.isFutureDate">Add time</span>
+                <span class="time-value" *ngIf="getDisplayTime(task.id, day.date)">{{ getDisplayTime(task.id, day.date) }}</span>
+                <span class="future-indicator" *ngIf="day.isFutureDate && !getDisplayTime(task.id, day.date)">-</span>
+              </div>
+
+              <div class="time-editor"
+                   *ngIf="isEditing(task.id, day.date)"
+                   (click)="$event.stopPropagation()">
+                <div class="time-inputs">
+                  <label class="time-label">Allocated</label>
+                  <input type="number" min="0" max="24" placeholder="Hrs"
+                         [(ngModel)]="allocatedHours[getCellKey(task.id, day.date)]" />
+                  <input type="number" min="0" max="59" placeholder="Min"
+                         [(ngModel)]="allocatedMinutes[getCellKey(task.id, day.date)]" />
+                
+                  <label class="time-label">Actual</label>
+                  <input type="number" min="0" max="24" placeholder="Hrs"
+                         [(ngModel)]="actualHours[getCellKey(task.id, day.date)]" />
+                  <input type="number" min="0" max="59" placeholder="Min"
+                         [(ngModel)]="actualMinutes[getCellKey(task.id, day.date)]" />
+                </div>
+                
+                <div class="editor-actions">
+                  <button class="save-btn" (click)="saveTimeEntry(task.id, day.date)">Save</button>
+                  <button class="cancel-btn" (click)="cancelEditing(); $event.stopPropagation()">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="total-cell">{{ formatHours(getTaskWeekTotal(task.id)) }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="day-totals-row">
+        <div class="task-cell">
+          <strong>Day total</strong>
+        </div>
+        <div class="total-cell" *ngFor="let day of weekDays">
+          <strong *ngIf="getDayTotal(day.date) > 0">{{ formatHours(getDayTotal(day.date)) }}</strong>
+        </div>
+        <div class="total-cell">
+          <strong>{{ formatHours(getWeekTotal()) }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="footer-actions">
+      <button class="copy-btn">Copy last week</button>
+      <button class="add-project-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Add project or task
+      </button>
+    </div> -->
+  </div>
+</div>

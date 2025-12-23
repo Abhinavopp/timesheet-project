@@ -1,0 +1,197 @@
+.sidebar {
+    width: 240px;
+    background: #1e293b;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    padding: 16px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .invite-team {
+    padding: 12px 16px;
+  }
+
+  .invite-btn {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .invite-btn:hover {
+    background: #2563eb;
+  }
+
+  .invite-btn .chevron {
+    margin-left: auto;
+  }
+
+  .nav-menu {
+    padding: 8px 12px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    position: relative;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 2px;
+    transition: all 0.15s;
+  }
+.nav-item i{
+font-size:20px;
+}
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .nav-item svg {
+    flex-shrink: 0;
+  }
+
+  .shortcut {
+    margin-left: auto;
+    font-size: 12px;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .chevron {
+    margin-left: auto;
+    opacity: 0.5;
+  }
+
+  .sidebar-section {
+    padding: 16px 12px 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .section-header {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 12px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .project-item {
+    padding-left: 8px;
+  }
+
+  .project-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    padding: 12px;
+    display: flex;
+    gap: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: auto;
+  }
+
+  .footer-btn {
+    width: 100%;
+    height: 40px;
+    background: #f3000033;
+    border: none;
+    color: #ffa186;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.15s;
+    padding: 0 10px;
+  }
+
+  .footer-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  .user-profile {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+  }
+
+  .user-profile:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f59e0b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .user-name {
+    font-size: 14px;
+    color: #e2e8f0;
+    flex: 1;
+  }
+
+  .nav-item .arrow-down{
+    font-size: 18px;
+    position: absolute;
+    right: 10px;
+  }

@@ -1,0 +1,51 @@
+<!-- Header Section -->
+<div class="header-section">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h1>Manage Shifts</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center p-4">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="alert alert-danger m-4" role="alert">
+    {{ error }}
+</div>
+
+<!-- Shifts Grid -->
+<div class="employee-wrapper" *ngIf="!loading && !error">
+    <div class="col-12 p-4">
+        <div class="row">
+            <!-- Dynamic Shift Cards -->
+            <div class="col-lg-3 col-md-6" *ngFor="let shift of shifts">
+                <div class="shift-card">
+                    <div class="shift-header">
+                        <div class="shift-title">{{ shift.shiftName }}</div>
+                        <div class="shift-time">{{ shift.startTime }} - {{ shift.endTime }}</div>
+                    </div>
+                    
+                    <!-- Display users for this shift if available -->
+                    <div class="employee-list" *ngIf="getShiftUsers(shift._id).length > 0">
+                        <div class="employee-item" *ngFor="let user of getShiftUsers(shift._id)">
+                            <img [src]="getUserImage(user)" 
+                                 [alt]="getFullName(user)" 
+                                 class="employee-avatar">
+                            <div class="employee-info">
+                                <div class="employee-name">{{ getFullName(user) }}</div>
+                                <div class="employee-role">{{ getUserRole(user) }}</div>
+                                <div class="employee-effective">Effective From: {{ formatDate(user.startDate) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

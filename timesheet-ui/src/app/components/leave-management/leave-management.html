@@ -1,0 +1,314 @@
+<div class="leave-header">
+  <div class="leave-menu-block">
+    <ul class="leave-menu">
+      <li [class.active]="activeTab() === 1" (click)="setTab(1)">Request List</li>
+      <li [class.active]="activeTab() === 2" (click)="setTab(2)">Leave List</li>
+      <li [class.active]="activeTab() === 3" (click)="setTab(3)">Employee Leave Balance</li>
+      <li [class.active]="activeTab() === 4" (click)="setTab(4)">Official Leave List</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Regenerate Warning Alert -->
+<div *ngIf="showRegenerateWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <i class="fas fa-exclamation-triangle me-2"></i>
+  {{ regenerateMessage }}
+  <button type="button" class="btn-close" (click)="showRegenerateWarning = false"></button>
+</div>
+
+<!-- Approved Date Confirmation Modal -->
+<div *ngIf="showApprovedDateConfirmation" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Regenerate</h5>
+      </div>
+      <div class="modal-body">
+        <p>{{ approvedDateMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="handleApprovedDateConfirmation(false)">No</button>
+        <button type="button" class="btn btn-primary" (click)="handleApprovedDateConfirmation(true)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (activeTab() === 1) {
+  <div class="col-12 p-4">
+    <div class="row">
+      <!-- Left Panel - Leave History -->
+      <div class="col-lg-8 pe-0">
+        <div class="cards-row">
+          <!-- Loop Through Leave History -->
+          <div class="leave-card" *ngFor="let leave of leaveHistory">
+            <!-- Card Header -->
+            <div class="card-header-section">
+              <span class="badge-custom" [ngClass]="getStatusBadgeClass(leave.status)">
+                <i class="fas" [ngClass]="getStatusIcon(leave.status)"></i>
+                {{ leave.status }}
+              </span>
+
+              <div class="stat-badge d-flex">
+                <span class="stat-label mt-auto me-2">{{ leave.category }}</span>
+                <span class="stat-value mb-0">
+                  {{ leave.duration || (leave.noOfDays + ' Day') }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="leave-info">
+              <img 
+              [src]="getLeaveUserImage(leave)"
+              [alt]="leave.userName || (leave.firstName + ' ' + leave.lastName)"
+              class="profile-img"
+            />
+
+              <div class="leave-details flex-grow-1">
+                <h6>{{ leave.userName || (leave.firstName + ' ' + leave.lastName) }}</h6>
+
+                <div class="leave-meta">
+                  <i class="far fa-clock"></i>
+                  <span>Applied on - {{ formatDate(leave.appliedDate || leave.createdDateTime) }}</span>
+                </div>
+
+                <div class="leave-reason">
+                  {{ leave.reason || leave.message }}
+                </div>
+
+                <div class="date-info">
+                  <i class="far fa-calendar-alt"></i>
+                  <span>
+                    <strong>
+                      {{ formatDate(leave.fromDate || leave.startDate) }}
+                      <span *ngIf="leave.toDate || leave.endDate">
+                        - {{ formatDate(leave.toDate || leave.endDate) }}
+                      </span>
+                    </strong>
+                  </span>
+
+                  <span *ngIf="leave.halfDayType === 'firsthalf'" class="label-firsthalf">First Half</span>
+                  <span *ngIf="leave.halfDayType === 'secondhalf'" class="label-secondhalf">Second Half</span>
+
+                  <span *ngIf="leave.timeRange" class="text-muted">
+                    ({{ leave.timeRange }})
+                  </span>
+
+                  <span *ngIf="leave.reqDetails?.time?.startTime || leave.reqDetails?.time?.endTime" class="text-muted">
+                    ({{ leave.reqDetails.time.startTime }} - {{ leave.reqDetails.time.endTime }})
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="d-flex justify-content-center mb-3">
+            <button class="btn btn-primary load-more-btn">Load More</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel - Request Leave Form -->
+      <div class="col-lg-4">
+        <div class="request-panel">
+          <form [formGroup]="leaveForm" (ngSubmit)="submitLeaveRequest()">
+            <div class="panel-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5>REQUEST LEAVE</h5>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    formControlName="lackPriorNotice"
+                  />
+                  <label class="checkbox-label">Lack of Prior Notice</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-content">
+              <!-- Stats Grid -->
+              <div class="stats-grid">
+                <div class="stat-box" *ngFor="let item of leaveStats">
+                  <div class="stat-value">{{ item.value }}</div>
+                  <div class="stat-label">{{ item.label }}</div>
+                </div>
+              </div>
+
+              <!-- Category -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Category <span class="required-asterisk">*</span></label>
+                <ng-select
+                  class="custom-ng-select"
+                  [items]="categoryOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select"
+                  formControlName="category">
+                </ng-select>
+              </div>
+
+              <!-- Request Type -->
+              <div class="col-12 mb-3">
+                <label class="form-label">Requested Type <span class="required-asterisk">*</span></label>
+                <ng-select
+                  class="custom-ng-select"
+                  [items]="requestTypeOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select"
+                  formControlName="reqType">
+                </ng-select>
+              </div>
+
+              <div class="row">
+                <!-- From Date -->
+                <div class="col-6 mb-3">
+                  <label class="form-label">From Date <span class="required-asterisk">*</span></label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="YYYY-MM-DD"
+                    bsDatepicker
+                    [bsConfig]="bsConfig"
+                    formControlName="fromDate"
+                  />
+                </div>
+
+                <!-- To Date -->
+                <div class="col-6 mb-3">
+                  <label class="form-label">To Date <span class="required-asterisk">*</span></label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="YYYY-MM-DD"
+                    bsDatepicker
+                    [bsConfig]="bsConfig"
+                    formControlName="toDate"
+                  />
+                </div>
+              </div>
+
+              <!-- Mail To -->
+              <div class="mb-3">
+                <label class="form-label">Mail To <span class="required-asterisk">*</span></label>
+                <ng-select 
+                  [items]="mailList" 
+                  bindLabel="name" 
+                  bindValue="id" 
+                  placeholder="Select Recipients"
+                  [multiple]="true" 
+                  [searchable]="true" 
+                  [clearable]="true" 
+                  groupBy="department"
+                  class="custom-user-select custom-ng-select mail-to-select" 
+                  formControlName="mailTo">
+                  
+                  <!-- GROUP LABEL -->
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    <div class="group-title">
+                      {{ item.department }}
+                    </div>
+                  </ng-template>
+
+                  <!-- USER OPTION TEMPLATE -->
+                  <ng-template ng-option-tmp let-item="item">
+                    <div class="user-option">
+                      <img [src]="item.photo" class="user-photo" />
+                      <div class="details">
+                        <div class="name">{{ item.name }}</div>
+                        <div class="email">
+                          <i class="fa fa-envelope"></i> {{ item.email }}
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+
+              <!-- Requested Days & Half Day Selection -->
+              <div class="mb-3" *ngIf="requestedDays > 0">
+                <label class="mb-2">
+                  Requested Days: <strong>{{ requestedDays }}</strong>
+                </label>
+
+                <!-- Display Selected Dates -->
+                <div class="mb-2" *ngIf="selectedDates.length > 0">
+                  <small class="text-muted">
+                    Selected: {{ getFormattedSelectedDates() }}
+                  </small>
+                </div>
+
+                <!-- Half Day Options -->
+                <div class="d-flex align-items-center mt-2">
+                  <div class="form-check me-3">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      [(ngModel)]="firstHalfChecked"
+                      [ngModelOptions]="{standalone: true}"
+                      id="firsthalf"
+                    >
+                    <label class="form-check-label" for="firsthalf">1st Half</label>
+                  </div>
+                  <div class="form-check">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      [(ngModel)]="secondHalfChecked"
+                      [ngModelOptions]="{standalone: true}"
+                      id="secondhalf"
+                    >
+                    <label class="form-check-label" for="secondhalf">2nd Half</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="mb-4">
+                <label class="form-label">Description <span class="required-asterisk">*</span></label>
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  placeholder="Enter your leave reason here..."
+                  formControlName="description">
+                </textarea>
+              </div>
+
+              <div class="d-flex justify-content-end gap-3">
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">Reset</button>
+                <button type="submit" class="btn btn-primary" [disabled]="leaveForm.invalid">
+                  Send Request
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (activeTab() === 2) {
+  <div class="menu-content">
+    <h3>Menu 2 Content</h3>
+    <p>This is menu 2 content.</p>
+  </div>
+}
+
+@if (activeTab() === 3) {
+  <div class="menu-content">
+    <h3>Menu 3 Content</h3>
+    <p>This is menu 3 content.</p>
+  </div>
+}
+
+@if (activeTab() === 4) {
+  @defer {
+    <app-official-leave-list />
+  }
+}

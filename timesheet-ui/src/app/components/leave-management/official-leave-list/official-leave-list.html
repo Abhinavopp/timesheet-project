@@ -1,0 +1,36 @@
+<div class="p-4">
+    <div class="holiday-container">
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        <p class="mt-2 text-gray-600">Loading official leaves...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+        <p class="font-bold">Error</p>
+        <p>{{ error }}</p>
+        <button 
+          (click)="fetchOfficialLeaves()" 
+          class="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+          Retry
+        </button>
+      </div>
+
+      <!-- No Data State -->
+      <div *ngIf="!loading && !error && officialLeaves.length === 0" class="text-center py-8 text-gray-500">
+        <p>No official leaves found.</p>
+      </div>
+
+      <!-- Data Grid -->
+      <div *ngIf="!loading && !error && officialLeaves.length > 0" class="holiday-grid">
+        <div class="holiday-item" *ngFor="let leave of officialLeaves">
+          <div class="date">{{ formatDate(leave.date) }}</div>
+          <div class="day">{{ formatDay(leave.day) }}</div>
+          <div class="name">{{ leave.name }}</div>
+        </div>
+      </div>
+    
+    </div>
+  </div>

@@ -1,0 +1,338 @@
+.attendance-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 10px 25px;
+}
+.heading{
+    font-size: 25px;
+}
+.heading span{
+    font-size: 17px;
+    color: #909090;
+}
+.legend {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .dot.present {
+    background-color: #4caf50;
+  }
+  
+  .dot.week-off {
+    background-color: #ff9800;
+  }
+  
+  .dot.leave {
+    background-color: #f44336;
+  }
+  
+  .dot.comp-off {
+    background-color: #ffc107;
+  }
+  
+  .dot.maternity {
+    background-color: #e91e63;
+  }
+  
+  .dot.paternity {
+    background-color: #03a9f4;
+  }
+  
+  .dot.holiday {
+    background-color: #9c27b0;
+  }
+  
+  .dot.half-day {
+    background-color: #4caf50;
+    border: 2px solid #1b5e20;
+    width: 10px;
+    height: 10px;
+  }
+  
+  .dot.wfh {
+    background-color: #8d6e63;
+  }
+  
+  .calendar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .employee-row {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+  }
+  
+  .employee-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+    border-right: 1px solid #e0e0e0;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+  
+  .badges {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .badge-green {
+    background-color: #4caf50;
+  }
+  
+  .badge-dark {
+    background-color: #424242;
+  }
+  
+  .badge-blue {
+    background-color: #2196f3;
+  }
+  
+  .badge-teal {
+    background-color: #009688;
+  }
+  
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e0e0e0;
+  }
+  
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  
+  .employee-name {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #333;
+    max-width: 150px;
+    word-wrap: break-word;
+  }
+  
+  .leave-indicator {
+    padding: 4px 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .leave-indicator.leave-red {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .calendar-section {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .calendar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: max-content;
+  }
+  
+  .calendar-header {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .day-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    text-align: center;
+    font-size: 11px;
+  }
+  
+  .day-num {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  
+  .day-name {
+    color: #666;
+    font-size: 10px;
+  }
+  
+  .attendance-row {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .status-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    height: 32px;
+  }
+  
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+    border-left: 1px solid #e0e0e0;
+    min-width: 200px;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+  
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .summary-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 1400px) {
+    .employee-info {
+      min-width: 160px;
+    }
+
+    .summary {
+      min-width: 180px;
+    }
+  
+    .day-header {
+      font-size: 10px;
+      min-width: 28px;
+    }
+
+    .status-cell {
+      min-width: 28px;
+      height: 28px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .employee-row {
+      flex-direction: column;
+    }
+  
+    .employee-info {
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 15px;
+      flex-direction: row;
+      justify-content: space-around;
+      min-width: 100%;
+    }
+  
+    .summary {
+      border-left: none;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 15px;
+      flex-direction: row;
+      justify-content: center;
+      min-width: 100%;
+    }
+  }
+  
+  .select-width{
+    width: 300px;
+  }
+  
+  /* Make ng-select look like a normal input */
+  .custom-ng-select ::ng-deep .ng-select-container {
+    height: 40px;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 0 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .custom-ng-select ::ng-deep .ng-value-container {
+    padding: 0 0.25rem;
+    height: 100%;
+  }
+  
+  .custom-ng-select ::ng-deep .ng-placeholder {
+    color: #9ca3af;
+    font-size: 14px;
+  }
+  
+  ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+    top: 9px;
+  }
+  
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
+    font-size: 15px;
+  }
+  
+  .form-control{
+    border: 1px solid #d1d5db;
+  }
+  
+  .attendance-scroll {
+    height: calc(100vh - 170px);
+    overflow: auto;
+  }

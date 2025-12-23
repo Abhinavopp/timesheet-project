@@ -1,0 +1,97 @@
+<div class="milestone-container">
+  <div class="milestone-header">
+    <div class="header-left">
+      <button class="today-btn">Today</button>
+    </div>
+
+    <div class="header-right">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="Search users, projects and compani..." />
+      </div>
+      <button class="filter-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Filter
+      </button>
+      <button class="view-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 2H6V6H2V2Z M10 2H14V6H10V2Z M2 10H6V14H2V10Z M10 10H14V14H10V10Z" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+      <button class="dropdown-btn">
+        Month
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="add-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Add
+      </button>
+      <button class="menu-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="3" r="1" fill="currentColor"/>
+          <circle cx="8" cy="8" r="1" fill="currentColor"/>
+          <circle cx="8" cy="13" r="1" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline-view">
+    <div class="timeline-header">
+      <div class="timeline-nav">
+        <button class="nav-btn" (click)="previousWeek()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="date-range">{{ weekRange }}</span>
+        <button class="nav-btn" (click)="nextWeek()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="timeline-days">
+        <div class="day-cell" *ngFor="let day of timelineDays" [class.today]="day.isToday">
+          <div class="day-name">{{ day.dayName }}</div>
+          <div class="day-date">{{ day.dateNum }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-content">
+      <div class="project-row" *ngFor="let project of projects">
+        <div class="project-info">
+          <button class="expand-btn">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <input type="checkbox" class="project-checkbox" />
+          <div class="project-details">
+            <div class="project-name">{{ project.name }}</div>
+            <div class="project-meta">Sci-Tech</div>
+          </div>
+        </div>
+        <div class="project-timeline">
+          <div class="task-count">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            {{ getTaskCount(project.id) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,256 @@
+
+   <!-- Header Section -->
+   <div class="header-section">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h1>Role Management
+            </h1>
+            <!-- <p>All employees and essential details</p> -->
+        </div>
+        <button class="new-employee-btn">
+            <i class="fas fa-plus"></i>
+            Create Role
+        </button>
+    </div>
+</div>
+<div class="employee-wrapper">
+
+
+<!-- Table Card -->
+<div class="table-card mt-4">
+    <div class="table-responsive">
+        <table class="table employee-table">
+            <thead>
+                <tr>
+                    <!-- <th><input type="checkbox" class="form-check-input"></th> -->
+                    <th>Role Name	</th>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Administrator
+                    </td>
+                    <td><span class="team-badge font-code"> admin</span></td>
+                    <td class="text-muted-custom">System administrator with full access	</td>
+                    <td><span class="team-badge team-badge-ch"> System</span></td>
+                    <td>
+                        <div class="status-text">
+                            <label class="status-toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-label">Active</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="far fa-edit"></i></button>
+                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Assistant Manager	
+                    </td>
+                    <td><span class="team-badge font-code"> assistant_manager	</span></td>
+                    <td class="text-muted-custom">Assistant Manager		</td>
+                    <td><span class="team-badge team-badge-ch"> Custom</span></td>
+                    <td>
+                        <div class="status-text">
+                            <label class="status-toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-label">Active</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="far fa-edit"></i></button>
+                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        CEO
+                    </td>
+                    <td><span class="team-badge font-code"> ceo</span></td>
+                    <td class="text-muted-custom">Chief Executive Officer		</td>
+                    <td><span class="team-badge team-badge-ch"> Custom</span></td>
+                    <td>
+                        <div class="status-text">
+                            <label class="status-toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-label">Active</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="far fa-edit"></i></button>
+                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Delivery Manager	
+                    </td>
+                    <td><span class="team-badge font-code"> delivery_manager	</span></td>
+                    <td class="text-muted-custom">Delivery Manager		</td>
+                    <td><span class="team-badge team-badge-ch"> Custom</span></td>
+                    <td>
+                        <div class="status-text">
+                            <label class="status-toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-label">Active</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="far fa-edit"></i></button>
+                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Developer
+                    </td>
+                    <td><span class="team-badge font-code"> developer</span></td>
+                    <td class="text-muted-custom">Developer	</td>
+                    <td><span class="team-badge team-badge-ch"> Custom</span></td>
+                    <td>
+                        <div class="status-text">
+                            <label class="status-toggle">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-label">Active</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="far fa-edit"></i></button>
+                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <button class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button class="pagination-btn active">1</button>
+        <button class="pagination-btn">2</button>
+        <button class="pagination-btn">3</button>
+        <span style="color: #9CA3AF; padding: 0 8px;">...</span>
+        <button class="pagination-btn">8</button>
+        <button class="pagination-btn">9</button>
+        <button class="pagination-btn">10</button>
+        <button class="pagination-btn">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="employeeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="fancy-modal">
+                <!-- Header -->
+                <div class="modal-header border-0 pb-0">
+                    <div>
+                        <h4 class="employee-name-modal">Aakash Khanal</h4>
+                        <p class="employee-email-modal">aakashk&#64;sciera.com</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body pt-2">
+                    <!-- Work Info -->
+                    <div class="info-section">
+                        <div class="section-head">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span>Work Information</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="info-item">
+                                    <span class="label">Role</span>
+                                    <span class="badge-soft-primary">Employee</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="info-item">
+                                    <span class="label">Team</span>
+                                    <span class="value">DS</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="info-item">
+                                    <span class="label">Reporting Manager</span>
+                                    <span class="value">No manager assigned</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="info-item">
+                                    <span class="label">Location</span>
+                                    <span class="value">Not specified</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="label">Status</span>
+                                    <span class="badge-soft-success">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leave Credits -->
+                    <div class="info-section mt-4">
+                        <div class="section-head">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Eligible Leave Credits</span>
+                        </div>
+
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-3">
+                                <div class="credit-box">
+                                    <span class="label">Eligible CL</span>
+                                    <h5 class="credit">0 days</h5>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="credit-box">
+                                    <span class="label">Eligible SL</span>
+                                    <h5 class="credit">0 days</h5>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="credit-box">
+                                    <span class="label">Eligible EL</span>
+                                    <h5 class="credit">0 days</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

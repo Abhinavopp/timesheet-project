@@ -1,0 +1,121 @@
+.header-section {
+    background: white;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 24px 32px;
+}
+
+.header-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #111827;
+}
+
+.header-section p {
+    color: #6B7280;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+.employee-wrapper{
+    height: calc(100vh - 150px);
+    overflow: auto;
+}
+
+
+.shift-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+    height: 260px;
+}
+
+.shift-header {
+    margin-bottom: 15px;
+}
+
+.shift-title {
+    color: #007bff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.shift-time {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.employee-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #dbd7d7;
+}
+
+.employee-item:last-child {
+    border-bottom: none;
+}
+
+.employee-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #6c757d;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+.employee-avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+.employee-info {
+    flex: 1;
+}
+
+.employee-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 2px;
+}
+
+.employee-role {
+    font-size: 14px;
+    color: #292e31;
+    margin-bottom: 2px;
+}
+
+.employee-effective {
+    font-size: 13px;
+    color: #909090;
+}
+
+.employee-list {
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar */
+.employee-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.employee-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.employee-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.employee-list::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}

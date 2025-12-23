@@ -1,0 +1,83 @@
+@import "@ng-select/ng-select/themes/default.theme.css";
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif!important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f8f9fa;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+button {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+#googleSignInDiv .nsm7Bb-HzV7m-LgbsSe{
+  width: 100%!important;
+}
+.custom-modal-width.modal-dialog {
+  max-width: 100%!important;
+  width: 50%!important;
+  margin:30px auto;
+}
+
+.custom-modal-width.modal-content {
+  border-radius: 12px;
+}
+.loader-container{
+  position: absolute;
+  /* top: 0; */
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 71%;
+  bottom: 0;
+  display: flex;
+}
+.loader {
+  width: 50px;
+  margin: auto;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #25b09b;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {to{transform: rotate(1turn)}}
+
+

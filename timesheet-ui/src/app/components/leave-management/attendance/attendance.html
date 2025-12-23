@@ -1,0 +1,144 @@
+<div class="attendance-header">
+    <div class="d-flex">
+        <h2 class="my-auto me-auto heading">Attendance - <span>{{ formattedMonth }}</span></h2>
+        <div class="select-width me-3" *ngIf="!isDeveloper">
+            <ng-select 
+              class="custom-ng-select" 
+              placeholder="Select Employee"
+              [items]="employeeList"
+              bindLabel="name"
+              bindValue="id"
+              [(ngModel)]="selectedEmployee"
+              (change)="onEmployeeChange()">
+            </ng-select>
+        </div>
+        <div class="select-width">
+            <input
+              #bsDatepicker="bsDatepicker"
+              type="text"
+              class="form-control"
+              [value]="formattedMonth"
+              bsDatepicker
+              [(ngModel)]="selectedMonth"
+              [bsConfig]="bsConfig"
+              (bsValueChange)="onMonthChange($event)"
+              readonly
+            />
+          </div>
+    </div>
+</div>
+
+<div class="p-4 pb-0">
+  <header class="legend">
+    <div class="legend-item">
+      <span class="dot present"></span>
+      <span>Present</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot week-off"></span>
+      <span>Week Off</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot leave"></span>
+      <span>Leave</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot comp-off"></span>
+      <span>Comp Off</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot maternity"></span>
+      <span>Maternity Leave</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot paternity"></span>
+      <span>Paternity Leave</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot holiday"></span>
+      <span>Official Holiday</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot half-day"></span>
+      <span>Half Day Present</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot wfh"></span>
+      <span>Working From Home</span>
+    </div>
+  </header>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center py-8">
+  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+  <p class="mt-2 text-gray-600">Loading attendance data...</p>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error && !loading" class="p-4">
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+    <p class="font-bold">Error</p>
+    <p>{{ error }}</p>
+    <button 
+      (click)="fetchAttendance()" 
+      class="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+      Retry
+    </button>
+  </div>
+</div>
+
+<!-- No Data State -->
+<div *ngIf="!loading && !error && employees.length === 0" class="text-center py-8 text-gray-500">
+  <p>No attendance data found for this period.</p>
+</div>
+
+<!-- Attendance Data -->
+<div *ngIf="!loading && !error && employees.length > 0" class="px-4 pb-4 attendance-scroll">
+    <div class="calendar-wrapper">
+        <div class="employee-row" *ngFor="let employee of employees">
+          <div class="employee-info">
+            <div class="badges">
+              <span class="badge badge-dark" title="Total working days">{{ employee.totalDays }}</span>
+              <span class="badge badge-green" title="Number of days present">{{ employee.presentDays }}</span>
+              
+            </div>
+            <div class="avatar">
+              <img [src]="employee.avatar || 'https://via.placeholder.com/50'" [alt]="employee.name">
+            </div>
+            <div class="employee-name">{{ employee.name }}</div>
+            <div class="leave-indicator" title="Number of Leaves" [class.leave-red]="employee.leaveDays > 2">
+              {{ employee.leaveDays }}
+            </div>
+          </div>
+
+          <div class="calendar-section">
+            <div class="calendar-grid">
+              <div class="calendar-header">
+                <div class="day-header" *ngFor="let day of daysInMonth">
+                  <div class="day-num">{{ day.dayNum }}</div>
+                  <div class="day-name">{{ day.dayName }}</div>
+                </div>
+              </div>
+
+              <div class="attendance-row">
+                <div class="status-cell" *ngFor="let day of employee.attendance">
+                  <span class="dot" [ngClass]="getStatusClass(day.status)" *ngIf="day.status"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="summary-item">
+              <span class="summary-label">Official Holidays</span>
+              <span class="badge badge-blue">{{ employee.officialHolidays }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Leave Balance</span>
+              <span class="badge badge-teal">{{ employee.leaveBalance.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

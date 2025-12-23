@@ -1,0 +1,127 @@
+<div class="workload-container">
+  <div class="workload-header">
+    <div class="header-controls">
+      <div class="view-toggle">
+        <button class="toggle-btn active">Users</button>
+        <button class="toggle-btn">Teams</button>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="People or client" />
+      </div>
+      <button class="filter-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Filter
+      </button>
+      <button class="tasks-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        Unplanned tasks
+      </button>
+      <button class="summary-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 5V8L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        AI utilization summary
+      </button>
+      <button class="add-task-btn">
+        Add task
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M3 6L6 9L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="menu-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="3" r="1" fill="currentColor"/>
+          <circle cx="8" cy="8" r="1" fill="currentColor"/>
+          <circle cx="8" cy="13" r="1" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="workload-content">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <button class="collapse-btn">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="sidebar-title">All people</span>
+        <button class="view-options-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="5" height="5" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="9" y="2" width="5" height="5" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="2" y="9" width="5" height="5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="user-list">
+        <div class="user-item" *ngFor="let user of users; let i = index">
+          <div class="user-avatar" [style.background-color]="getAvatarColor(i)">
+            {{ user.avatar }}
+          </div>
+          <div class="user-info">
+            <div class="user-name">{{ user.name }}</div>
+            <div class="user-stats">
+              <span class="hours">{{ user.totalHours }}m / {{ user.availableHours }}h</span>
+              <span class="availability" [ngClass]="getAvailabilityClass(user.availability)">
+                Availability {{ user.availability }}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-header">
+        <div class="timeline-nav">
+          <button class="nav-btn" (click)="previousWeek()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="nav-btn" (click)="nextWeek()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <span class="date-range">{{ weekRange }}</span>
+      </div>
+
+      <div class="timeline-grid">
+        <div class="grid-header">
+          <div class="day-cell" *ngFor="let day of weekDays" [class.today]="day.isToday">
+            <div class="day-name">{{ day.dayName }}</div>
+            <div class="day-date">{{ day.dateNum }}</div>
+          </div>
+        </div>
+
+        <div class="grid-body">
+          <div class="user-timeline" *ngFor="let user of users">
+            <div class="timeline-row">
+              <div class="day-slot" *ngFor="let day of weekDays" [class.today]="day.isToday">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

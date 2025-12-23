@@ -1,0 +1,178 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h1 class="logo">
+      Sciera</h1>
+  </div>
+  <nav class="nav-menu">
+    <a href="#" class="nav-item" *ngIf="'dashboard' | appPermission">
+      <i class="ph ph-house-line"></i>
+      Dashboard
+    </a>
+    <a routerLink="/plan-today" routerLinkActive="active" class="nav-item">
+      <i class="ph ph-calendar-dots"></i>
+      Plan for Today
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item" (click)="toggleCollapse('time')"
+      [attr.aria-expanded]="!collapseStates['time']" aria-controls="collapseTime" *ngIf="'timeEntry' | appPermission">
+      <i class="ph ph-clock"></i>
+      Time
+      <i class="ph ph-caret-down arrow-down"></i>
+    </a>
+    <div class="nav-item submenu-header" id="collapseTime" [collapse]="collapseStates['time']" [isAnimated]="true"
+      [isAnimated]="true">
+
+      <a href="javascript:void(0)" class="nav-item" *ngIf="'timeEntryapproval' | appPermission">
+        <i class="ph ph-check-circle"></i>
+        Approval
+      </a>
+    </div>
+
+    <a href="javascript:void(0)" class="nav-item" (click)="toggleCollapse('report')"
+      [attr.aria-expanded]="!collapseStates['report']" aria-controls="collapseReport" *ngIf="'reports' | appPermission">
+      <i class="ph ph-chart-line"></i>
+      Report
+      <i class="ph ph-caret-down arrow-down"></i>
+    </a>
+    <div class="nav-item submenu-header" id="collapseReport" [collapse]="collapseStates['report']" [isAnimated]="true">
+      <a href="javascript:void(0)" class="nav-item">
+        <i class="ph ph-chart-bar"></i>
+        Weekly Report
+
+      </a>
+      <a href="javascript:void(0)" class="nav-item">
+        <i class="ph ph-chart-pie-slice"></i>
+        Leave Report
+      </a>
+      <a href="javascript:void(0)" class="nav-item">
+        <i class="ph ph-chart-donut"></i>
+        Entry Report
+      </a>
+    </div>
+    <a href="javascript:void(0)" class="nav-item" *ngIf="'analytics' | appPermission">
+      <i class="ph ph-presentation-chart"></i>
+      Analytics
+    </a>
+
+    <a routerLink="/milestone" routerLinkActive="active" class="nav-item">
+      <i class="ph ph-checkerboard"></i>
+      Milestone
+
+    </a>
+    <a href="javascript:void(0)" class="nav-item" *ngIf="'organization' | appPermission">
+      <i class="ph ph-users-three"></i>
+      Organization List
+    </a>
+    <a href="javascript:void(0)" class="nav-item" *ngIf="'shift' | appPermission">
+      <i class="ph ph-user-switch"></i>
+      Shift
+    </a>
+  </nav>
+
+  <div class="sidebar-section">
+    <div class="section-header">MANAGE</div>
+    <a routerLink="/projects" routerLinkActive="active" class="nav-item" *ngIf="'project' | appPermission">
+      <i class="ph ph-squares-four"></i>
+      Projects
+    </a>
+    <a routerLink="/my-work" routerLinkActive="active" class="nav-item" *ngIf="'task' | appPermission">
+      <i class="ph ph-user-check"></i>
+      Task
+    </a>
+    <a routerLink="/schedule" routerLinkActive="active" class="nav-item">
+      <i class="ph ph-clock"></i>
+      Schedule
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item" (click)="toggleCollapse('leave')"
+      [attr.aria-expanded]="!collapseStates['leave']" aria-controls="collapseLeave" *ngIf="'leave' | appPermission ">
+      <i class="ph ph-clock-user"></i>
+      Leave
+      <i class="ph ph-caret-down arrow-down"></i>
+    </a>
+    <div class="nav-item submenu-header" id="collapseLeave" [collapse]="collapseStates['leave']" [isAnimated]="true">
+      <a routerLink="/leave" routerLinkActive="active" class="nav-item" href="javascript:;"
+        *ngIf="'requestleave' | appPermission">
+        <i class="ph ph-file-text"></i>
+        Request Leave
+      </a>
+      <a routerLink="/attendance" routerLinkActive="active" class="nav-item" href="javascript:;"
+        *ngIf="'attendance' | appPermission">
+        <i class="ph ph-file"></i>
+        Attendance
+      </a>
+    </div>
+
+    <a routerLink="/employee" routerLinkActive="active" class="nav-item" *ngIf="'users' | appPermission">
+      <i class="ph ph-users"></i>
+      User
+    </a>
+    <a href="javascript:void(0)" class="nav-item" *ngIf="'tags' | appPermission">
+      <i class="ph ph-tag"></i>
+      Tags
+    </a>
+    <a routerLink="/my-board" routerLinkActive="active" class="nav-item">
+      <i class="ph ph-kanban"></i>
+      My Board
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item" (click)="toggleCollapse('settings')"
+      [attr.aria-expanded]="!collapseStates['settings']" aria-controls="collapseSettings"
+      *ngIf="'roles' | appPermission">
+      <i class="ph ph-gear"></i>
+      Settings
+      <i class="ph ph-caret-down arrow-down"></i>
+    </a>
+    <div class="nav-item submenu-header" id="collapseSettings" [collapse]="collapseStates['settings']"
+      [isAnimated]="true">
+      <a href="javascript:void(0)" class="nav-item" *ngIf="'roles' | appPermission">
+        <i class="ph ph-user-focus"></i>
+        Roles
+      </a>
+      <a href="javascript:void(0)" class="nav-item" *ngIf="'userProfileSitePermission' | appPermission">
+        <i class="ph ph-user-gear"></i>
+        Permission
+      </a>
+      <a href="javascript:void(0)" class="nav-item" *ngIf="'teams' | appPermission">
+        <i class="ph ph-users-four"></i>
+        Team
+      </a>
+    </div>
+  </div>
+  <div class="sidebar-section py-1">
+    <!-- <a href="javascript:void(0)" class="nav-item"  *ngIf="loginRole == 'developer' ">
+            <i class="ph ph-info"></i>
+             Help
+          </a>
+          <a href="javascript:void(0)" class="nav-item" *ngIf="superAdminHelp">
+            <i class="ph ph-info"></i>
+             Help
+          </a> -->
+  </div>
+
+  <!-- <div class="sidebar-section">
+      <div class="section-header">
+        STARRED
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="chevron">
+          <path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div> -->
+
+  <div class="sidebar-footer">
+    <button class="footer-btn">
+      Logout
+      <i class="ph ph-sign-out"></i>
+
+    </button>
+  </div>
+
+  <div class="user-profile">
+    <div class="user-avatar">{{ userInitial }}</div>
+    <span class="user-name">{{ userName }}</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="chevron">
+      <path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </svg>
+  </div>
+</div>

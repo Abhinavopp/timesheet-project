@@ -1,0 +1,499 @@
+.timesheet-container {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8f9fa;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: calc(100vh - 57px);
+    overflow: auto;
+}
+
+.timesheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.week-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.week-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.week-btn:hover {
+  background: #f8f9fa;
+}
+
+.week-btn.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: #64748b;
+}
+
+.nav-btn:hover {
+  background: #f8f9fa;
+  border-color: #cbd5e1;
+}
+
+.week-range {
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.submit-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.submit-btn:hover {
+  background: #eff6ff;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: #64748b;
+}
+.time-label{
+  font-size: 11px;
+}
+.icon-btn:hover {
+  background: #f8f9fa;
+  border-color: #cbd5e1;
+}
+
+.timesheet-content {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  /* overflow: hidden; */
+}
+
+.timesheet-grid {
+  width: 100%;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: 250px repeat(7, 1fr) 120px;
+  /* background: #f8f9fa; */
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-cell {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+  border-right: 1px solid #e5e7eb;
+}
+
+.header-cell.project-column {
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-cell.today {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.day-name {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.day-date {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.header-cell.today .day-date {
+  color: #1e40af;
+}
+
+.grid-body {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 300px);
+  overflow: auto;
+}
+
+.project-section {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.collapse-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.project-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: 250px repeat(7, 1fr) 120px;
+  border-bottom: 1px solid #f1f5f9;
+  min-height: 60px;
+}
+
+.task-cell {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+}
+
+.task-name {
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.task-estimated {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.time-cell {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background 0.1s;
+  position: relative;
+}
+
+.time-cell:hover {
+  background: #f8f9fa;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.clock-icon {
+  color: #cbd5e1;
+}
+
+.add-time-text {
+  color: #94a3b8;
+}
+
+.time-value {
+  color: #0f172a;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.time-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+
+.time-input {
+  width: 45px;
+  padding: 6px 8px;
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  color: #0f172a;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.time-separator {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.save-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  font-weight: 500;
+}
+
+.save-btn:hover {
+  background: #2563eb;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #64748b;
+}
+
+.cancel-btn:hover {
+  background: #f8f9fa;
+}
+
+.total-cell {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 500;
+  border-right: 1px solid #e5e7eb;
+}
+
+.day-totals-row {
+  display: grid;
+  grid-template-columns: 250px repeat(7, 1fr) 120px;
+  background: #f8f9fa;
+  border-top: 2px solid #e5e7eb;
+  min-height: 50px;
+}
+
+.day-totals-row .task-cell {
+  background: #f8f9fa;
+}
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.copy-btn {
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.copy-btn:hover {
+  color: #2563eb;
+}
+
+.add-project-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.add-project-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+::placeholder {
+  font-size: 12px;
+}
+
+
+/* Add these styles to your existing CSS file */
+
+/* Project collapse functionality */
+.project-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.project-header:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.collapse-icon {
+  transition: transform 0.2s ease;
+}
+
+.collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.task-row.hidden {
+  display: none;
+}
+
+/* Future date restrictions */
+.time-cell.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: #f8f8f8;
+}
+
+.time-cell.disabled:hover {
+  background-color: #f8f8f8;
+}
+
+.time-cell.disabled .add-time-text,
+.time-cell.disabled .clock-icon {
+  display: none;
+}
+
+.future-indicator {
+  color: #999;
+  font-size: 14px;
+}
+
+.header-cell.future-date {
+  background-color: #f8f8f8;
+}
+
+.header-cell.future-date .day-name,
+.header-cell.future-date .day-date {
+  color: #999;
+}
+
+/* Tooltip for disabled cells */
+.time-cell.disabled[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 12px;
+  white-space: nowrap;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  z-index: 1000;
+}
+
+.time-cell {
+  position: relative;
+}
+.task-count {
+  color: #ffffff;
+  font-size: 13px;
+  margin-left: 4px;
+  background: #3c82f5;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 5px;
+}

@@ -1,0 +1,41 @@
+<div class="board-container">
+  <div class="board-header">
+    <div class="header-content">
+      <h1 class="board-title">My Board</h1>
+      <p class="board-subtitle">Kanban view of your tasks</p>
+    </div>
+  </div>
+
+  <div class="kanban-board">
+    <div class="kanban-column"
+         *ngFor="let column of columns"
+         [class.drag-over]="dragOverColumn === column.id">
+      <div class="column-header">
+        <h3 class="column-title">{{ column.title }}</h3>
+        <span class="task-count">{{ column.tasks.length }} tasks</span>
+      </div>
+
+      <div class="column-content"
+           (dragover)="onDragOver($event, column.id)"
+           (dragleave)="onDragLeave($event, column.id)"
+           (drop)="onDrop($event, column.id)">
+        <div class="task-card"
+             *ngFor="let task of column.tasks"
+             draggable="true"
+             (dragstart)="onDragStart($event, task, column.id)"
+             (dragend)="onDragEnd($event)">
+          <h4 class="task-card-title">{{ task.title }}</h4>
+          <div class="task-card-footer">
+            <span class="task-project">{{ getProject(task.project_id)?.name }}</span>
+            <span class="task-priority" [ngClass]="getPriorityClass(task.priority)">
+              {{ task.priority.toLowerCase() }}
+            </span>
+          </div>
+        </div>
+        <div class="empty-column" *ngIf="column.tasks.length === 0">
+          <p>Drop tasks here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

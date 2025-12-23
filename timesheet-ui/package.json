@@ -1,0 +1,35 @@
+{
+  "name": "angular-starter",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.3.12",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/router": "^20.0.0",
+    "@fortawesome/angular-fontawesome": "^3.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@ng-select/ng-select": "^20.4.0",
+    "@supabase/supabase-js": "^2.79.0",
+    "bootstrap": "^5.3.8",
+    "ngx-bootstrap": "^20.0.2",
+    "ngx-toastr": "^19.1.0",
+    "rxjs": "^7.8.1",
+    "tslib": "^2.5.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.0.0",
+    "@angular/cli": "^20.0.0",
+    "@angular/compiler-cli": "^20.0.0",
+    "@types/node": "^24.10.0",
+    "typescript": "^5.8.2"
+  }
+}

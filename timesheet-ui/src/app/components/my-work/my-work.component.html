@@ -1,0 +1,1381 @@
+<div class="my-work-container">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button class="group-btn" (click)="toggleGroupBy()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+        Group: {{ groupBy === 'status' ? 'Status' : 'Project' }}
+      </button>
+      <div class="filter-wrapper">
+        <button class="filter-btn" (click)="toggleFilterDropdown()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          Add Filter
+        </button>
+        @if (showFilterDropdown) {
+          <div class="filter-dropdown">
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+              Status
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 8L6 10L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              Tags
+            </button> 
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="5" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.5" />
+                <path d="M6 3V7M10 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Due date
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6H12M4 10H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Priority
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.5" />
+                <path d="M3 14C3 11.7909 5.23858 10 8 10C10.7614 10 13 11.7909 13 14" stroke="currentColor"
+                  stroke-width="1.5" />
+              </svg>
+              Assignee
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="4" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+              Archived
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3L10 7L14 8L10 9L8 13L6 9L2 8L6 7L8 3Z" stroke="currentColor" stroke-width="1.5"
+                  stroke-linejoin="round" />
+              </svg>
+              Assigned comment
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3L10 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              Created by
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="5" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.5" />
+                <path d="M6 3V7M10 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Date closed
+            </button>
+            <button class="filter-option">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="5" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.5" />
+                <path d="M6 3V7M10 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Date created
+            </button>
+          </div>
+        }
+     
+      </div>
+    </div>
+
+    <div class="toolbar-right">
+      <!-- <label class="toggle-label">
+        <input type="checkbox" [(ngModel)]="showCompletedTasks" (change)="toggleCompletedTasks()" />
+        <span class="toggle-switch"></span>
+        <span class="toggle-text">Completed task</span>
+      </label> -->
+      <div class="btn-group" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                aria-controls="dropdown-basic">
+          Add Task / Subtask <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="openclientPopup()">Add Task</a></li>
+          <li class="divider dropdown-divider m-0"></li>
+          <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="openclientPopup2()">Add Subtask</a></li>
+        </ul>
+      </div>
+      <!-- <button class="add-task-btn" (click)="openclientPopup()">Add Task</button>
+      <button class="add-task-btn" (click)="openclientPopup2()">Add Sub Task</button> -->
+    </div>
+  </div>
+  <!-- Status View -->
+  @if (groupBy === 'status') {
+  <div class="content">
+    <div class="status-section" *ngFor="let status of statuses">
+
+      <!-- Section Header -->
+      <div class="section-header" (click)="toggleStatusExpansion(status)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="expand-icon"
+          [class.expanded]="expandedStatus.has(status)">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+
+        <h2 class="section-title">
+          {{ status }} ({{ tasksByStatus[status].length }})
+
+        </h2>
+      </div>
+
+      <!-- Tasks Table -->
+      <div class="tasks-table" [class.expanded]="expandedStatus.has(status)">
+        <div class="table-header">
+          <div class="col-name">NAME</div>
+          <div class="col-date">DUE DATE</div>
+          <div class="col-priority text-center">PRIORITY</div>
+          <div class="col-project">PROJECT</div>
+          <div class="col-tags">TAGS</div>
+          <div class="col-tags">ACTION</div>
+        </div>
+        <div class="table-rows">
+               <!-- Task Row -->
+        <ng-container *ngFor="let task of tasksByStatus[status]">
+          <div class="task-row">
+            <div class="col-name"><span class="task-name">{{ task.title }}</span></div>
+            <div class="col-date">
+              <span class="date-text" [class.today]="task.due_date || task.endDate">
+                <!-- <ng-container *ngIf="(task.start_date || task.startDate) && (task.due_date || task.endDate); else noDate">
+                  {{ formatDateRange(task.start_date || task.startDate, task.due_date || task.endDate) }}
+                </ng-container> -->
+                @if ((task.start_date || task.startDate) && (task.due_date || task.endDate)) {
+                  {{ formatDateRange(task.start_date || task.startDate, task.due_date || task.endDate) }}
+                }
+                <ng-template #noDate>
+                  <span class="no-date">No date range</span>
+                </ng-template>
+              </span>
+            </div>
+            <!-- <div class="col-priority">{{ task.priority || 'N/A' }}</div> -->
+            <div class="col-priority text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                [attr.stroke]="getPriorityFlagColor(task.priority)" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="lucide-flag-icon">
+                <path
+                  d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+              </svg>
+            </div>
+            <div class="col-project"><span class="task-name">{{ task.project?.name || 'No Project' }}</span></div>
+            <div class="col-tags">
+              <span class="tag" *ngFor="let tag of task.tags">{{ tag.name }}</span>
+              <!-- <span class="tag" *ngIf="task.tags?.length === 0">No assigned tags</span> -->
+              @if (task.tags?.length === 0) {
+                <span class="tag">No assigned tags</span>
+              }
+            </div>
+            <div class="col-actions">
+              <div class="task-detail-icon" (click)="opentaskdetailtPopup(task._id)"><i class="ph ph-caret-double-right"></i>
+  
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+          </div>
+   
+      </div>
+    </div>
+
+  </div>
+}
+
+<!-- Project View -->
+@if (groupBy === 'project') {
+  <div class="content">
+    <div class="project-section" *ngFor="let project of projects">
+      <div class="section-header" (click)="toggleProjectExpansion(project.id)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="expand-icon"
+          [class.expanded]="expandedProject.has(project.id)">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <h2 class="section-title">
+          {{ project.name || 'Unnamed Project' }}
+          @if (!project.name) {
+            <span class="debug-text">(No Name Provided)</span>
+          }
+          <!-- <span *ngIf="!project.name" class="debug-text">(No Name Provided)</span> -->
+        </h2>
+      </div>
+  
+      <div class="tasks-table" [class.expanded]="expandedProject.has(project.id)">
+        <div class="table-header">
+          <div class="col-name">NAME</div>
+          <div class="col-date">DUE DATE</div>
+          <div class="col-priority text-center">PRIORITY</div>
+          <div class="col-status">STATUS</div>
+          <div class="col-tags">TAGS</div>
+          <div class="col-tags">ACTION</div>
+        </div>
+  
+        <!-- Task Rows for each project -->
+        <div class="table-rows">
+          <ng-container *ngFor="let task of project.tasks">
+            <!-- Parent Task Row -->
+            <div class="task-row parent-task" [class.has-subtasks]="task.subtasks && task.subtasks.length > 0">
+              <div class="col-name">
+                <!-- Expand/Collapse icon for subtasks -->
+                @if (task.subtasks && task.subtasks.length > 0) {
+                  <!-- *ngIf="task.subtasks && task.subtasks.length > 0" -->
+                <svg  
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 20 20" 
+                  fill="none" 
+                  class="subtask-expand-icon"
+                  [class.expanded]="expandedTasks.has(task.id || task._id)"
+                  (click)="toggleTaskExpansion(task.id || task._id); $event.stopPropagation()"
+                  style="cursor: pointer; margin-right: 4px;">
+                  <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                }
+                
+                <span class="status-dot" [ngClass]="getStatusBadgeClass(task.status)"></span>
+                <span class="task-name">{{ task.title || 'No Title' }}</span>
+                
+                <!-- Subtask count badge -->
+                @if (task.subtasks && task.subtasks.length > 0) {
+                  <!-- *ngIf="task.subtasks && task.subtasks.length > 0"  -->
+                  <span>
+                  <span class="subtask-count-badge">
+                    <i class="ph ph-git-branch"></i>
+                    {{ task.subtasks.length }}</span>
+                </span>
+                }
+        
+              </div>
+    
+              <div class="col-date">
+                <span class="date-text" [class.today]="task.due_date || task.endDate">
+                  @if ((task.start_date || task.startDate) && (task.due_date || task.endDate)) {
+                    {{ formatDateRange(task.start_date || task.startDate, task.due_date || task.endDate) }}
+                  } @else {
+                    <span class="no-date">No date range</span>
+                  }
+                  <!-- <ng-container *ngIf="(task.start_date || task.startDate) && (task.due_date || task.endDate); else noDate">
+                    {{ formatDateRange(task.start_date || task.startDate, task.due_date || task.endDate) }}
+                  </ng-container>
+                  <ng-template #noDate>
+                    <span class="no-date">No date range</span>
+                  </ng-template> -->
+                </span>
+              </div>
+    
+              <div class="col-priority text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  [attr.stroke]="getPriorityFlagColor(task.priority)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide-flag-icon">
+                  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+                </svg>
+              </div>
+    
+              <div class="col-status">
+                <span class="status-badge" [ngClass]="getStatusBadgeClass(task.status)">
+                  {{ task.status || 'UNKNOWN' }}
+                </span>
+              </div>
+    
+              <div class="col-tags">
+                <span class="tag" *ngFor="let tag of task.tags">{{ tag.name }}</span>
+                @if (!task.tags || task.tags.length === 0) {
+                  <span class="tag">No assigned tags</span>
+                }
+                <!-- <span class="tag" *ngIf="!task.tags || task.tags.length === 0">No assigned tags</span> -->
+              </div>
+              
+              
+              <div class="col-actions">
+                <div class="task-detail-icon" (click)="opentaskdetailtPopup(task._id)">
+                  <i class="ph ph-caret-double-right"></i>
+                </div>
+              </div>
+  
+              
+            </div>
+  
+            <!-- Subtasks Rows -->
+            @if (expandedTasks.has(task.id || task._id) && task.subtasks && task.subtasks.length > 0) {
+              <div 
+              class="task-row subtask-row" 
+              *ngFor="let subtask of task.subtasks"
+              [class.expanded]="expandedTasks.has(task.id || task._id)">
+              
+              <div class="col-name">
+                <span class="subtask-indicator">└─</span>
+                <span class="status-dot" [ngClass]="getStatusBadgeClass(subtask.status)"></span>
+                <span class="task-name subtask-name">{{ subtask.title || 'No Title' }}</span>
+              </div>
+    
+              <div class="col-date">
+                <span class="date-text" [class.today]="subtask.due_date || subtask.endDate">
+                  <!-- <ng-container *ngIf="(subtask.start_date || subtask.startDate) && (subtask.due_date || subtask.endDate); else noSubtaskDate">
+                    {{ formatDateRange(subtask.start_date || subtask.startDate, subtask.due_date || subtask.endDate) }}
+                  </ng-container>
+                  <ng-template #noSubtaskDate>
+                    <span class="no-date">No date range</span>
+                  </ng-template> -->
+                  @if ((subtask.start_date || subtask.startDate) && (subtask.due_date || subtask.endDate)) {
+                    {{ formatDateRange(subtask.start_date || subtask.startDate, subtask.due_date || subtask.endDate) }}
+                  } @else {
+                    <span class="no-date">No date range</span>
+                  }
+                </span>
+              </div>
+    
+              <div class="col-priority text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  [attr.stroke]="getPriorityFlagColor(subtask.priority)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide-flag-icon">
+                  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
+                </svg>
+              </div>
+    
+              <div class="col-status">
+                <span class="status-badge" [ngClass]="getStatusBadgeClass(subtask.status)">
+                  {{ subtask.status || 'UNKNOWN' }}
+                </span>
+              </div>
+    
+              <div class="col-tags">
+                @if (subtask.tags && subtask.tags.length > 0) {
+                  @for (tag of subtask.tags; track $index) {
+                    <span class="tag">{{ tag.name }}</span>
+                  }
+                } @else {
+                  <span class="tag">No assigned tags</span>
+                }
+                <!-- <span class="tag" *ngFor="let tag of subtask.tags">{{ tag.name }}</span>
+                @if (!subtask.tags || subtask.tags.length === 0) {
+                  <span class="tag">No assigned tags</span>
+                } -->
+                <!-- <span class="tag" *ngIf="!subtask.tags || subtask.tags.length === 0">No assigned tags</span> -->
+              </div>
+              
+              <div class="col-actions">
+                <div class="task-detail-icon" (click)="opentaskdetailtPopup(subtask._id)">
+                  <i class="ph ph-caret-double-right"></i>
+                </div>
+              </div>
+            </div>
+            }
+       
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+}
+
+
+</div>
+
+<!-- Add Task Modal -->
+
+<ng-template #clientModal>
+  <form [formGroup]="taskForm">
+    <!-- <div class="modal-header border-0 p-0">
+    </div> -->
+    <button type="button" class="btn-close btn-close-ch" (click)="closemodalPopup3()"></button>
+
+    <div class="p-4">
+      <!-- Page Heading -->
+      <div class="text-center mb-4">
+        <h2 class="page-title">Create New Task</h2>
+        <p class="page-subtitle">Fill in the details below to create a new task for your team</p>
+      </div>
+
+      <!-- ========== SCHEDULING ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Scheduling</h3>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Allocated Hours <span class="required">*</span></label>
+            <input type="text" class="form-control" formControlName="allocatedHours">
+            @if (formControls['allocatedHours'].invalid && formControls['allocatedHours'].touched) {
+              <div class="text-danger w-100">
+                Please enter a valid number of hours.
+              </div>
+            }
+            <!-- <div *ngIf="formControls['allocatedHours'].invalid && formControls['allocatedHours'].touched" class="text-danger w-100">
+              Please enter a valid number of hours.
+            </div> -->
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Start & End Date <span class="required">*</span></label>
+            <input type="text" class="form-control" bsDaterangepicker [(ngModel)]="dateRange"
+              (ngModelChange)="onDateRangeChange($event)" [ngModelOptions]="{standalone: true}" />
+              @if (formControls['startDate'].invalid && formControls['startDate'].touched) {
+                <div class="text-danger">
+                  Start date is required.
+                </div>
+              }
+              <!-- <div *ngIf="formControls['startDate'].invalid && formControls['startDate'].touched" class="text-danger">
+                Start date is required.
+              </div> -->
+              @if (formControls['endDate'].invalid && formControls['endDate'].touched) {
+                <div class="text-danger w-100">
+                  End date is required.
+                </div>
+              }
+              <!-- <div *ngIf="formControls['endDate'].invalid && formControls['endDate'].touched" class="text-danger w-100">
+                End date is required.
+              </div> -->
+          </div>
+
+
+        </div>
+
+        <div class="form-check form-switch mt-3">
+          <input class="form-check-input" type="checkbox">
+          <label class="form-check-label">Send Email Notification</label>
+        </div>
+      </div>
+
+
+
+      <!-- ========== BASIC INFORMATION ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Basic Information</h3>
+
+        <div class="mb-3">
+          <label class="form-label">Task Title <span class="required">*</span></label>
+          <input type="text" class="form-control" formControlName="title" placeholder="Enter the task title..." />
+          @if (formControls['title'].invalid && formControls['title'].touched) {
+            <div class="text-danger w-100">
+              Task title is required and must be at least 3 characters long.
+            </div>
+          }
+          <!-- <div *ngIf="formControls['title'].invalid && formControls['title'].touched" class="text-danger w-100">
+            Task title is required and must be at least 3 characters long.
+          </div> -->
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="recurring">
+          <label class="form-check-label" for="recurring">Recurring Task</label>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" formControlName="description"
+            placeholder="Enter task description..."></textarea>
+        </div>
+      </div>
+
+      <!-- ========== ASSIGNMENT & ORGANIZATION ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Assignment & Organization</h3>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Project <span class="required">*</span></label>
+            <ng-select class="custom-ng-select" formControlName="project" [items]="project" bindLabel="name"
+              placeholder="Select Project" [clearable]="true" (change)="onProjectChange($event?._id)">
+            </ng-select>
+            @if (formControls['project'].invalid && formControls['project'].touched) {
+              <div class="text-danger w-100">
+                Project is required.
+              </div>
+            }
+            <!-- <div *ngIf="formControls['project'].invalid && formControls['project'].touched" class="text-danger w-100">
+              Project is required.
+            </div> -->
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Client <span class="required">*</span></label>
+
+            <ng-select class="custom-ng-select" placeholder="Select Client" [items]="clients" bindLabel="name"
+              bindValue="id" [multiple]="true" formControlName="client" [clearable]="true">
+            </ng-select>
+            @if (formControls['client'].invalid && formControls['client'].touched) {
+              <div class="text-danger w-100">
+                At least one client must be selected.
+              </div>
+            }
+            <!-- <div *ngIf="formControls['client'].invalid && formControls['client'].touched" class="text-danger w-100">
+              At least one client must be selected.
+            </div> -->
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Bucket <span class="required">*</span></label>
+            <ng-select class="custom-ng-select" placeholder="Select Bucket" [items]="buckets" bindLabel="name"
+              bindValue="id" formControlName="bucket" [clearable]="true"
+              [disabled]="taskForm.get('bucket')?.disabled ?? false">
+            </ng-select>
+            @if (formControls['assignTo'].invalid && formControls['assignTo'].touched) {
+              <div class="text-danger w-100">
+                At least one user must be assigned.
+              </div>
+            }
+            <!-- <div *ngIf="formControls['assignTo'].invalid && formControls['assignTo'].touched" class="text-danger w-100">
+              At least one user must be assigned.
+            </div> -->
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Category</label>
+            <ng-select class="custom-ng-select" [items]="categories" placeholder="Select Category"
+              formControlName="category">
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Tags</label>
+            <ng-select class="custom-ng-select" placeholder="Select Tags" [items]="tags" bindLabel="tagName"
+              bindValue="tagId" [multiple]="true" formControlName="tags" [clearable]="true">
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Assign To <span class="required">*</span></label>
+            <ng-select [items]="assignUsers" bindLabel="name" bindValue="id" placeholder="Select Users"
+              [multiple]="true" [searchable]="true" [clearable]="true" groupBy="department"
+              class="custom-user-select custom-ng-select" formControlName="assignTo">
+              <!-- GROUP LABEL -->
+
+              <ng-template ng-optgroup-tmp let-item="item">
+                <div class="group-title">
+                  {{ item.department }}
+                </div>
+              </ng-template>
+
+              <!-- USER OPTION TEMPLATE -->
+              <ng-template ng-option-tmp let-item="item">
+                <div class="user-option">
+                  <img [src]="item.photo" class="user-photo" />
+                  <div class="details">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="email">
+                      <i class="fa fa-envelope"></i> {{ item.email }}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </ng-select>
+
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Followers</label>
+            <!-- <ng-select placeholder="Select Followers" [items]="followers" bindLabel="name" bindValue="id"
+              [multiple]="true" formControlName="followers" [clearable]="true"
+              [disabled]="taskForm.get('followers')?.disabled ?? false">
+            </ng-select> -->
+
+            <ng-select [items]="followers" bindLabel="name" bindValue="id" placeholder="Select Followers"
+              [multiple]="true" [searchable]="true" [clearable]="true" groupBy="department"
+              class="custom-user-select custom-ng-select" formControlName="followers">
+              <!-- GROUP LABEL -->
+
+              <ng-template ng-optgroup-tmp let-item="item">
+                <div class="group-title">
+                  {{ item.department }}
+                </div>
+              </ng-template>
+
+              <!-- USER OPTION TEMPLATE -->
+              <ng-template ng-option-tmp let-item="item">
+                <div class="user-option">
+                  <img [src]="item.photo" class="user-photo" />
+                  <div class="details">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="email">
+                      <i class="fa fa-envelope"></i> {{ item.email }}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ========== CONFIGURATION ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Configuration</h3>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <!-- Client Request -->
+            <label class="config-title">Client Request <span class="required">*</span></label>
+            <div class="segmented-radio">
+              <label class="seg-item">
+                <input type="radio" name="clientRequest">
+                <span>Yes</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="clientRequest" checked>
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <!-- Billing -->
+            <label class="config-title">Billing Type <span class="required">*</span></label>
+            <div class="segmented-radio">
+              <label class="seg-item">
+                <input type="radio" name="billing">
+                <span>Billable</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="billing" checked>
+                <span>Non-Billable</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <!-- Requirement -->
+            <label class="config-title mt-3">Requirement Type <span class="required">*</span></label>
+            <div class="segmented-radio">
+              <label class="seg-item">
+                <input type="radio" name="reqType" checked>
+                <span>New</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="reqType">
+                <span>CR</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="reqType">
+                <span>Bug</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <!-- Priority -->
+            <label class="config-title mt-3">Priority <span class="required">*</span></label>
+            <div class="segmented-radio">
+              <label class="seg-item">
+                <input type="radio" name="priority">
+                <span>Low</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="priority" checked>
+                <span>Medium</span>
+              </label>
+
+              <label class="seg-item">
+                <input type="radio" name="priority">
+                <span>High</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
+      <div class="task-card">
+        <h3 class="section-title">Attachments</h3>
+
+        <div class="attachment-box">
+          <input type="file" id="fileInput" class="file-input" multiple (change)="onFileSelected($event)">
+
+          <label for="fileInput" class="upload-area">
+            <div class="upload-icon">📎</div>
+            <p class="upload-text">Click to Upload or Drag & Drop Files</p>
+            <span class="upload-sub">Supported formats: PDF, DOCX, PNG, JPG</span>
+          </label>
+        </div>
+
+        <!-- File Preview List -->
+         @if (uploadedFiles.length > 0) {
+          <div class="file-list">
+            <div class="file-item" *ngFor="let file of uploadedFiles; let i = index">
+              <div class="file-info">
+                <span class="file-name">{{ file.name }}</span>
+                <span class="file-size">{{ file.size / 1024 | number:'1.0-2' }} KB</span>
+              </div>
+              <button class="remove-btn" (click)="removeFile(i)">✖</button>
+            </div>
+          </div>
+         }
+     
+      </div>
+
+      <!-- ========== DETAILS ========== -->
+      <!-- <div class="task-card">
+    <h3 class="section-title">Details</h3>
+
+    <label class="form-label">Description</label>
+    <textarea class="form-control" placeholder="Enter task description..."></textarea>
+  </div> -->
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn-reset me-3" (click)="closemodalPopup3()">Close</button>
+        <button class="btn-submit" (click)="submitTask()">Submit</button>
+      </div>
+
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #taskdetailModal>
+  <div class="task-detail-popup">
+    <div class="task-container task-edit" *ngIf="isEditMode" [formGroup]="editTaskForm">
+      <div class="p-0">
+        <div class="mb-3">
+          <h2 class="page-title">Edit Task</h2>
+        </div>
+
+        <div class="task-card">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label">End Date <span class="required">*</span></label>
+              <input 
+                type="text" 
+                class="form-control" 
+                bsDatepicker
+                [(ngModel)]="editEndDate"
+                (ngModelChange)="onEditEndDateChange($event)" 
+                [ngModelOptions]="{standalone: true}"
+                [bsConfig]="{ dateInputFormat: 'MMMM DD, YYYY' }" />
+              @if (editFormControls['endDate'].invalid && editFormControls['endDate'].touched) {
+                <div class="text-danger w-100">
+                  End date is required.
+                </div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Project <span class="required">*</span></label>
+              <ng-select class="custom-ng-select" formControlName="project" [items]="project" bindLabel="name"
+                bindValue="_id" placeholder="Select Project" [clearable]="true" 
+                (change)="onEditProjectChange($event?._id || $event)">
+              </ng-select>
+              @if (editFormControls['project'].invalid && editFormControls['project'].touched) {
+                <div class="text-danger w-100">
+                  Project is required.
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Client <span class="required">*</span></label>
+              <ng-select class="custom-ng-select" placeholder="Select Client" [items]="clients" bindLabel="name"
+                bindValue="_id" [multiple]="true" formControlName="client" [clearable]="true">
+              </ng-select>
+              @if (editFormControls['client'].invalid && editFormControls['client'].touched) {
+                <div class="text-danger w-100">
+                  At least one client must be selected.
+                </div>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Tags</label>
+              <ng-select class="custom-ng-select" placeholder="Select Tags" [items]="tags" bindLabel="tagName"
+                bindValue="tagId" [multiple]="true" formControlName="tags" [clearable]="true">
+              </ng-select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Assign To <span class="required">*</span></label>
+              <ng-select [items]="assignUsers" bindLabel="name" bindValue="id" placeholder="Select Users"
+                [multiple]="true" [searchable]="true" [clearable]="true" groupBy="department"
+                class="custom-user-select custom-ng-select" formControlName="assignTo">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  <div class="group-title">
+                    {{ item.department }}
+                  </div>
+                </ng-template>
+
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="user-option">
+                    <img [src]="item.photo" class="user-photo" />
+                    <div class="details">
+                      <div class="name">{{ item.name }}</div>
+                      <div class="email">
+                        <i class="fa fa-envelope"></i> {{ item.email }}
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-select>
+              @if (editFormControls['assignTo'].invalid && editFormControls['assignTo'].touched) {
+                <div class="text-danger w-100">
+                  At least one user must be assigned.
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="config-title">Billing Type <span class="required">*</span></label>
+              <div class="segmented-radio">
+                <label class="seg-item">
+                  <input type="radio" formControlName="billing" value="BILLABLE">
+                  <span>Billable</span>
+                </label>
+
+                <label class="seg-item">
+                  <input type="radio" formControlName="billing" value="NON_BILLABLE">
+                  <span>Non-Billable</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="config-title">Requirement Type <span class="required">*</span></label>
+              <div class="segmented-radio">
+                <label class="seg-item">
+                  <input type="radio" formControlName="requirementType" value="NEW">
+                  <span>New</span>
+                </label>
+
+                <label class="seg-item">
+                  <input type="radio" formControlName="requirementType" value="CR">
+                  <span>CR</span>
+                </label>
+
+                <label class="seg-item">
+                  <input type="radio" formControlName="requirementType" value="BUG">
+                  <span>Bug</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="config-title mt-3">Priority <span class="required">*</span></label>
+              <div class="segmented-radio">
+                <label class="seg-item">
+                  <input type="radio" formControlName="priority" value="LOW">
+                  <span>Low</span>
+                </label>
+
+                <label class="seg-item">
+                  <input type="radio" formControlName="priority" value="MEDIUM">
+                  <span>Medium</span>
+                </label>
+
+                <label class="seg-item">
+                  <input type="radio" formControlName="priority" value="HIGH">
+                  <span>High</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" formControlName="description" rows="4"
+            placeholder="Enter task description..."></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+          <button class="btn-reset me-3" (click)="cancelEditMode()">Close</button>
+          <button class="btn-submit" (click)="updateTask()">Update</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-container task-detail" *ngIf="!isEditMode">
+
+      <!-- ========== TASK HEADER ========== -->
+      <div class="task-header">
+
+        <div class="task-title-row">
+          <h1 class="task-title">
+            <i class="ph ph-clipboard-text me-2" style="color: #6366f1;"></i>
+            {{ taskDetail?.title }}
+          </h1>
+
+          <div class="task-actions">
+            <button class="btn-icon active">
+              <i class="ph ph-star"></i>
+            </button>
+            <button class="btn-icon" (click)="enableEditMode()" *ngIf="canEditTask()">
+              <i class="ph ph-pencil"></i>
+            </button>
+            <button class="btn-icon" (click)="closemodalPopup4()">
+              <i class="ph ph-caret-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Creator Info -->
+        <div class="creator-info">
+          <div class="creator-avatar">
+            @if (taskDetail?.creatorId?.userImage) {
+              <img width="30" height="30" style="border-radius: 100%;"
+              [src]="imageBaseUrl + (taskDetail?.creatorId?.userImage ?? '')" (error)="onImageError($event)"
+              class="avatar-img" />
+            }
+              @if (!taskDetail?.creatorId?.userImage) {
+                <div class="avatar-fallback">
+                  {{ taskDetail?.creatorId?.firstName?.charAt(0) }}
+                  {{ taskDetail?.creatorId?.lastName?.charAt(0) }}
+                </div>
+              }
+         
+          </div>
+
+
+          <div class="creator-details">
+            <p class="creator-name">
+              Created by {{ taskDetail?.creatorId?.firstName }}
+              {{ taskDetail?.creatorId?.lastName }}
+            </p>
+
+            <p class="creator-date">
+              on {{ taskDetail?.createdDate | date:'MMMM d, y' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Dates + Time -->
+        <div class="task-meta">
+
+          <div class="meta-item">
+            <div class="meta-icon calendar">
+              <i class="ph ph-calendar-check"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Start Date</div>
+              <div class="meta-value">{{ taskDetail?.startDate | date:'MMM d, y' }}</div>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <div class="meta-icon calendar">
+              <i class="ph ph-calendar-blank"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">End Date</div>
+              <div class="meta-value">{{ taskDetail?.endDate | date:'MMM d, y' }}</div>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <div class="meta-icon clock">
+              <i class="ph ph-clock"></i>
+            </div>
+            <div class="meta-content">
+              <div class="meta-label">Time Tracked</div>
+              <div class="time-info">
+                <span class="time-badge time-spent">
+                  {{ taskDetail?.allocatedHours }} hrs allocated
+                </span>
+
+                <span class="time-badge time-total">
+                  {{ taskDetail?.workedHours }} hrs worked
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========= TASK BODY ========= -->
+      <div class="task-body">
+        <div class="section-header">
+          <h2 class="section-title">Task Details</h2>
+        </div>
+
+        <div class="info-grid">
+
+          <!-- ASSIGNEE -->
+          <div class="info-row w-48">
+            <div class="info-content">
+              <div class="info-label">Assignee</div>
+
+              <div class="info-value">
+                <div class="assignee-container d-flex align-items-center flex-wrap">
+
+                  <!-- Show first 4 OR all when expanded -->
+                  <div class="assignee-avatar me-2" *ngFor="let user of (showAllAssignees 
+                                            ? (taskDetail?.users?.assigned ?? []) 
+                                            : (taskDetail?.users?.assigned ?? []) | slice:0:4)">
+
+                    <!-- Image -->
+                    <!-- <img *ngIf="user?.userImage" [src]="imageBaseUrl + user.userImage" (error)="onImageError($event)"
+                      class="avatar-img" /> -->
+
+                    <!-- initials -->
+                    <!-- <div *ngIf="!user?.userImage" class="avatar-fallback">
+                      {{ user?.firstName?.charAt(0) }}{{ user?.lastName?.charAt(0) }}
+                    </div> -->
+
+                    @if (user?.userImage) {
+                      <img
+                        [src]="imageBaseUrl + user.userImage"
+                        (error)="onImageError($event)"
+                        class="avatar-img"
+                      />
+                    } @else {
+                      <div class="avatar-fallback">
+                        {{ user?.firstName?.charAt(0) }}{{ user?.lastName?.charAt(0) }}
+                      </div>
+                    }
+                    
+                  </div>
+
+                  <!-- +N button (only when collapsed) -->
+                  <!-- <div class="assignee-avatar more-count"
+                    *ngIf="!showAllAssignees && (taskDetail?.users?.assigned?.length ?? 0) > 4"
+                    (click)="showAllAssignees = true" style="cursor: pointer;">
+                    +{{ (taskDetail?.users?.assigned?.length ?? 0) - 4 }}
+                  </div> -->
+                  @if (!showAllAssignees && (taskDetail?.users?.assigned?.length ?? 0) > 4) {
+                    <div
+                      class="assignee-avatar more-count"
+                      (click)="showAllAssignees = true"
+                      style="cursor: pointer;"
+                    >
+                      +{{ (taskDetail?.users?.assigned?.length ?? 0) - 4 }}
+                    </div>
+                  }
+                </div>
+
+                <!-- OPTIONAL: Collapse button -->
+                <!-- <div *ngIf="showAllAssignees" class="assignee-collapse-btn mt-1" (click)="showAllAssignees = false">
+                  Show less
+                </div> -->
+                @if (showAllAssignees) {
+                  <div
+                    class="assignee-collapse-btn mt-1"
+                    (click)="showAllAssignees = false">
+                    Show less
+                  </div>
+                }
+              </div>
+            </div> 
+          </div>
+
+          <!-- TAGS -->
+          <div class="info-row w-48">
+            <div class="info-content">
+              <div class="info-label">Tags</div>
+              <div class="info-value">
+
+                <!-- If tags exist and length > 0 -->
+                <!-- <ng-container *ngIf="(taskDetail?.tags || []).length > 0; else noTags">
+                  <span *ngFor="let tag of (taskDetail?.tags || [])" class="badge-custom badge-tag mt-2 me-2">
+                    <i class="fas fa-tag"></i> {{ tag }}
+                  </span>
+                </ng-container> -->
+
+                <!-- If no tags -->
+                <!-- <ng-template #noTags>
+                  <span class="badge-custom mt-2">No tags assigned</span>
+                </ng-template> -->
+                @if ((taskDetail?.tags || []).length > 0) {
+                  @for (tag of taskDetail?.tags || []; track $index) {
+                    <span class="badge-custom badge-tag mt-2 me-2">
+                      <i class="fas fa-tag"></i> {{ tag }}
+                    </span>
+                  }
+                } @else {
+                  <span class="badge-custom mt-2">No tags assigned</span>
+                }
+              </div>
+            </div>
+          </div>
+
+
+          <!-- PROJECT -->
+          <div class="info-row">
+            <div class="info-content">
+              <div class="info-label">Project</div>
+              <div class="info-value">
+                {{ taskDetail?.project?.name }}
+              </div>
+            </div>
+          </div>
+
+          <!-- CLIENT -->
+          <div class="info-row">
+            <div class="info-content">
+              <div class="info-label">Client</div>
+              <div class="info-value">
+                {{ taskDetail?.clients?.[0]?.name }}
+              </div>
+            </div>
+          </div>
+
+          <!-- BILLING -->
+          <div class="info-row">
+            <div class="info-content">
+              <div class="info-label">Billing Type</div>
+              <div class="info-value">
+                <span class="badge-custom" [ngStyle]="{
+                        'background': taskDetail?.billingType ? '#d1fae5' : '#dcfce7',
+                        'color': taskDetail?.billingType ? '#065f46' : '#166534'
+                      }">
+                  {{ taskDetail?.billingType ? 'Billable' : 'Non-Billable' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TASK TYPE -->
+          <div class="info-row">
+            <div class="info-content">
+              <div class="info-label">Task Type</div>
+              <div class="info-value">
+                <span class="badge-custom badge-new">
+                  {{ taskDetail?.taskType }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRIORITY -->
+          <div class="info-row">
+            <div class="info-content">
+              <div class="info-label">Priority</div>
+              <div class="info-value">
+                <span class="badge-custom" [ngClass]="{
+                    'badge-low': taskDetail?.priority?.toLowerCase() === 'low',
+                    'badge-medium': taskDetail?.priority?.toLowerCase() === 'medium',
+                    'badge-high': taskDetail?.priority?.toLowerCase() === 'high'
+                  }">
+                  {{ taskDetail?.priority || 'No priority assigned' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="info-label mt-3">Description</div>
+        <div class="description-box">
+          {{ taskDetail?.desc }}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #clientModal2>
+  <form [formGroup]="subtaskForm">
+    <!-- <div class="modal-header border-0 p-0">
+    </div> -->
+    <button type="button" class="btn-close btn-close-ch" (click)="closemodalPopup3()"></button>
+
+    <div class="p-4">
+      <!-- Page Heading -->
+      <div class="text-center mb-4">
+        <h2 class="page-title">Create Sub Task</h2>
+        <p class="page-subtitle">Fill in the details below to create a sub task for your project</p>
+      </div>
+
+      <!-- ========== SCHEDULING ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Scheduling</h3>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Allocated Hours <span class="required">*</span></label>
+            <input type="text" class="form-control" formControlName="allocatedHours">
+            <!-- <div *ngIf="formControls['allocatedHours'].invalid && formControls['allocatedHours'].touched" class="text-danger w-100">
+              Please enter a valid number of hours.
+            </div> -->
+            @if (formControls['allocatedHours'].invalid && formControls['allocatedHours'].touched) {
+              <div class="text-danger w-100">
+                Please enter a valid number of hours.
+              </div>
+            }
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Start & End Date <span class="required">*</span></label>
+            <input type="text" class="form-control" bsDaterangepicker [(ngModel)]="dateRange"
+              (ngModelChange)="onDateRangeChange($event)" [ngModelOptions]="{standalone: true}" />
+              <!-- <div *ngIf="formControls['startDate'].invalid && formControls['startDate'].touched" class="text-danger">
+                Start date is required.
+              </div>
+              <div *ngIf="formControls['endDate'].invalid && formControls['endDate'].touched" class="text-danger w-100">
+                End date is required.
+              </div> -->
+              @if (formControls['startDate'].invalid && formControls['startDate'].touched) {
+                <div class="text-danger">
+                  Start date is required.
+                </div>
+              }
+              
+              @if (formControls['endDate'].invalid && formControls['endDate'].touched) {
+                <div class="text-danger w-100">
+                  End date is required.
+                </div>
+              }
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ========== BASIC INFORMATION ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Basic Information</h3>
+
+        <div class="mb-3">
+          <label class="form-label">Task Title <span class="required">*</span></label>
+          <input type="text" class="form-control" formControlName="title" placeholder="Enter the task title..." />
+          <!-- <div *ngIf="formControls['title'].invalid && formControls['title'].touched" class="text-danger w-100">
+            Task title is required and must be at least 3 characters long.
+          </div> -->
+          @if (formControls['title'].invalid && formControls['title'].touched) {
+            <div class="text-danger w-100">
+              Task title is required and must be at least 3 characters long.
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" formControlName="description"
+            placeholder="Enter task description..."></textarea>
+        </div>
+      </div>
+
+      <!-- ========== ASSIGNMENT & ORGANIZATION ========== -->
+      <div class="task-card">
+        <h3 class="section-title">Assignment & Organization</h3>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Project <span class="required">*</span></label>
+         <ng-select 
+  class="custom-ng-select" 
+  formControlName="project"
+  [items]="projects"
+  bindLabel="name"
+  placeholder="Select Project"
+  [clearable]="true"
+  (change)="onSubtaskProjectChange($event?.id)">
+</ng-select>
+            <!-- <div *ngIf="formControls['project'].invalid && formControls['project'].touched" class="text-danger w-100">
+              Project is required.
+            </div> -->
+            @if (formControls['project'].invalid && formControls['project'].touched) {
+              <div class="text-danger w-100">
+                Project is required.
+              </div>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Parent Task List <span class="required">*</span></label>
+
+            <ng-select 
+            class="custom-ng-select" 
+            placeholder="Select Parent Task List" 
+            [items]="parentTaskList" 
+            bindLabel="title"
+            bindValue="_id"
+            formControlName="parentTask"
+            [clearable]="true"
+            [loading]="isLoadingParentTasks"
+            [disabled]="!subtaskForm.get('project')?.value || isLoadingParentTasks">
+            <ng-template ng-option-tmp let-item="item">
+              <div class="parent-task-option">
+                <div class="task-title">{{ item.title }}</div>
+                <div class="task-meta" style="font-size: 11px; color: #6b7280;">
+                  Status: {{ item.status }} | Priority: {{ item.priority }}
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
+          <!-- <div *ngIf="subtaskForm.get('parentTask')?.invalid && subtaskForm.get('parentTask')?.touched" class="text-danger w-100">
+            Parent task is required.
+          </div> -->
+          @if (subtaskForm.get('parentTask')?.invalid && subtaskForm.get('parentTask')?.touched) {
+            <div class="text-danger w-100">
+              Parent task is required.
+            </div>
+          }
+          </div>
+        </div>
+        <div class="row g-3">
+
+
+          <div class="col-md-6">
+            <label class="form-label">Tags</label>
+            <ng-select class="custom-ng-select" placeholder="Select Tags" [items]="tags" bindLabel="tagName"
+              bindValue="tagId" [multiple]="true" formControlName="tags" [clearable]="true">
+            </ng-select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Assign To <span class="required">*</span></label>
+            <ng-select [items]="assignUsers" bindLabel="name" bindValue="id" placeholder="Select Users"
+              [multiple]="true" [searchable]="true" [clearable]="true" groupBy="department"
+              class="custom-user-select custom-ng-select" formControlName="assignTo">
+              <!-- GROUP LABEL -->
+
+              <ng-template ng-optgroup-tmp let-item="item">
+                <div class="group-title">
+                  {{ item.department }}
+                </div>
+              </ng-template>
+
+              <!-- USER OPTION TEMPLATE -->
+              <ng-template ng-option-tmp let-item="item">
+                <div class="user-option">
+                  <img [src]="item.photo" class="user-photo" />
+                  <div class="details">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="email">
+                      <i class="fa fa-envelope"></i> {{ item.email }}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </ng-select>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn-reset me-3" (click)="closemodalPopup5()">Close</button>
+        <button class="btn-submit" (click)="submitSubTask()">Submit</button>
+      </div>
+
+    </div>
+  </form>
+</ng-template>
